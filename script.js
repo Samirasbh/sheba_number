@@ -1,7 +1,7 @@
 
 
 
-
+// test code for access the shepa API with axios and javascript fetch , that has CORS error , and didnt work
 // -------------------------- fetch
         const jsonData = {
           'action': "ira_iban_action",
