@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fa-IR" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      form {
+        width: 300px;
+        border: 2px solid rgba(178, 158, 158, 0.636);
+        border-radius: 25px;
+        padding: 40px 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .result {
+        width: 300px;
+        border: 2px solid rgba(178, 158, 158, 0.636);
+        padding: 25px;
+        border-radius: 25px;
+        margin-top: 10px;
+        visibility: hidden;
+      }
+
+      input {
+        width: 200px;
+        border: none;
+        margin: 15px;
+        padding: 20px;
+        text-align: center;
+        border-radius: 20px;
+        background-color: rgba(211, 211, 211, 0.401);
+      }
+
+      ::placeholder {
+        color: rgba(116, 115, 114, 0.658);
+        font-size: 20px;
+        letter-spacing: 2px;
+      }
+
+      input:focus {
+        outline: 1px solid rgba(211, 211, 211, 0.401);
+        text-align: left;
+        direction: ltr;
+      }
+
+      button {
+        font-size: 17px;
+        border: none;
+        border-radius: 20px;
+        padding: 15px;
+        color: rgb(222, 213, 213);
+        background-color: rgb(165, 51, 209);
+      }
+    </style>
+  </head>
+  <body>
+    <form>
+      <p>شماره کارت خود را وارد کنید</p>
+      <input
+        type="text"
+        name="card"
+        id="card"
+        placeholder="---- ---- ---- ----"
+      />
+      <button type="button" id="btn">تبدیل به شبا</button>
+    </form>
+    <div class="result" id="result"></div>
+    <!-- <script src="http://localhost/php_basic/06-ex/script.js"></script> -->
+    <script>
+      var input = document.getElementById("card");
+      var btn = document.getElementById("btn");
+
+      btn.addEventListener("click", () => {
+        var cardVal = input.value;
+
+        const xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "https://shepa.com/wp-admin/admin-ajax.php");
+        xhttp.setRequestHeader(
+          "Content-type",
+          "application/x-www-form-urlencoded"
+        );
+        xhttp.send(`action=ira_iban_action&cardnumber_or_accound=${cardVal}`);
+
+        xhttp.onload = function () {
+          data = JSON.parse(this.responseText);
+
+          console.log(data);
+
+          var sheba = data.result["iban_number"];
+          var name = data.result["first_name"];
+          var account = data.result["deposits"];
+
+          var result = document.getElementById("result");
+          result.style.visibility = "visible";
+          result.innerText = `شماره حساب : ${account} 
+          صاحب حساب : ${name}
+          شماره شبا : ${sheba}`;
+        };
+      });
+    </script>
+  </body>
+</html>
